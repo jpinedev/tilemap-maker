@@ -8,6 +8,8 @@ const isMac = process.platform === 'darwin';
 let window = null;
 let menu;
 
+let workingPath = null;
+
 let header = { type: "tilemap-maker", version: "0.0.0" };
 let sources = [];
 let size = [64, 64, 16, 16];
@@ -52,7 +54,7 @@ app.on('ready', () => {
         {
             label: 'File',
             submenu: [
-                //TODO: add functionality to 'open', 'import spritesheet', 'save', 'save as'
+                //TODO: add functionality to 'import spritesheet'
                 {
                     label: 'New Window',
                     accelerator: 'CmdOrCtrl+N',
@@ -76,7 +78,8 @@ app.on('ready', () => {
                 },
                 {
                     label: 'Save As...',
-                    accelerator: 'CmdOrCtrl+Shift+S'
+                    accelerator: 'CmdOrCtrl+Shift+S',
+                    click: saveFileAs
                 },
                 { type: 'separator' },
                 isMac ? { role: 'close' } : { role: 'quit' }
@@ -145,21 +148,30 @@ function openResizeWindow() {
     });
 }
 
-function saveFile() {
-    //ipcMain.emit('save-file', compileFile());
+function writeFile() {
     let content = compileFile();
+    fs.writeFile(workingPath, content, (err) => {
+        if(err) {
+            console.log('An error has occurred with the creation of the file.');
+            return;
+        }
+    });
+}
+function saveFile() {
+    if(workingPath !== null) writeFile();
+    else saveFileAs();
+}
+function saveFileAs() {
+    //ipcMain.emit('save-file', compileFile());
     dialog.showSaveDialog(window, {
+        title: 'Save As...',
         filters: [
             { name: 'JSON', extensions: ['json', 'tmm'] }
         ]
     }).then(result => {
         if(result.canceled || result.filePath === undefined) return;
-        fs.writeFile(result.filePath, content, (err) => {
-            if(err) {
-                console.log('An error has occurred with the creation of the file.');
-                return;
-            }
-        });
+        workingPath = result.filePath;
+        writeFile();
     }).catch(err => {
         console.log(err);
     });
@@ -176,11 +188,14 @@ function compileFile() {
 
 function openFile() {
     dialog.showOpenDialog(window, {
+        title: 'Open...',
         filters: [
             { name: 'JSON', extensions: ['json', 'tmm'] }
-        ]
+        ],
+        properties: ['openFile']
     }).then(result => {
         if(result.canceled || result.filePaths === undefined) return;
+        workingPath = result.filePaths[0];
         fs.readFile(result.filePaths[0], "utf-8", (err, data) => {
             if(err) {
                 console.log('An error has occurred while trying to load the file.');
