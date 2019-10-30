@@ -148,14 +148,20 @@ function openResizeWindow() {
 function saveFile() {
     //ipcMain.emit('save-file', compileFile());
     let content = compileFile();
-    dialog.showSaveDialog((filename) => {
-        if(filename === undefined) return;
-        fs.writeFile(filename, content, (err) => {
+    dialog.showSaveDialog(window, {
+        filters: [
+            { name: 'JSON', extensions: ['json', 'tmm'] }
+        ]
+    }).then(result => {
+        if(result.canceled || result.filePath === undefined) return;
+        fs.writeFile(result.filePath, content, (err) => {
             if(err) {
                 console.log('An error has occurred with the creation of the file.');
                 return;
             }
         });
+    }).catch(err => {
+        console.log(err);
     });
 }
 function compileFile() {
@@ -171,11 +177,10 @@ function compileFile() {
 function openFile() {
     dialog.showOpenDialog(window, {
         filters: [
-            //{ name: 'TilemapMaker', extensions: ['tmm'] },
-            { name: 'JSON', extensions: ['json'] }
+            { name: 'JSON', extensions: ['json', 'tmm'] }
         ]
     }).then(result => {
-        if(result.filePaths === undefined) return;
+        if(result.canceled || result.filePaths === undefined) return;
         fs.readFile(result.filePaths[0], "utf-8", (err, data) => {
             if(err) {
                 console.log('An error has occurred while trying to load the file.');
