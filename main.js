@@ -1,6 +1,7 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
+const fs = require('fs');
 
 const isMac = process.platform === 'darwin';
 
@@ -9,7 +10,7 @@ let menu;
 
 let header = { type: "tilemap-maker", version: "0.0.0" };
 let sources = [];
-let resize = [64, 64, 16, 16];
+let size = [64, 64, 16, 16];
 let layers = [
     {
         collision: true,
@@ -20,8 +21,8 @@ let layers = [
 function createWindow() {
     if(window !== null) return;
     window = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1280,
+        height: 720,
         webPreferences: {
             nodeIntegration: true
         }
@@ -55,12 +56,13 @@ app.on('ready', () => {
                 {
                     label: 'New Window',
                     accelerator: 'CmdOrCtrl+N',
-                    click() { createWindow() }
+                    click: createWindow
                 },
                 { type: 'separator' },
                 {
                     label: 'Open...',
-                    accelerator: 'CmdOrCtrl+O'
+                    accelerator: 'CmdOrCtrl+O',
+                    click: openFile
                 },
                 {
                     label: 'Import Spritesheet...',
@@ -69,7 +71,8 @@ app.on('ready', () => {
                 { type: 'separator' },
                 {
                     label: 'Save',
-                    accelerator: 'CmdOrCtrl+S'
+                    accelerator: 'CmdOrCtrl+S',
+                    click: saveFile
                 },
                 {
                     label: 'Save As...',
@@ -142,11 +145,63 @@ function openResizeWindow() {
     });
 }
 
+function saveFile() {
+    //ipcMain.emit('save-file', compileFile());
+    let content = compileFile();
+    dialog.showSaveDialog((filename) => {
+        if(filename === undefined) return;
+        fs.writeFile(filename, content, (err) => {
+            if(err) {
+                console.log('An error has occurred with the creation of the file.');
+                return;
+            }
+        });
+    });
+}
+function compileFile() {
+    let json = [
+        header,
+        sources,
+        size,
+        layers
+    ];
+    return JSON.stringify(json);
+}
+
+function openFile() {
+    dialog.showOpenDialog(window, {
+        filters: [
+            //{ name: 'TilemapMaker', extensions: ['tmm'] },
+            { name: 'JSON', extensions: ['json'] }
+        ]
+    }).then(result => {
+        if(result.filePaths === undefined) return;
+        fs.readFile(result.filePaths[0], "utf-8", (err, data) => {
+            if(err) {
+                console.log('An error has occurred while trying to load the file.');
+                return;
+            }
+
+            let tilemapFile = JSON.parse(data);
+            // TODO: add dialog warning opening old file version
+            // if(tilemapFile[0].version !== app.getVersion()) { }
+            if(tilemapFile[0].type === "tilemap-maker") {
+                header = tilemapFile[0];
+                sources = tilemapFile[1];
+                size = tilemapFile[2];
+                layers = tilemapFile[3];
+            }
+        });
+    }).catch(err => {
+        console.log(err);
+    });
+}
+
 ipcMain.on('get-resize', (event, arg) => {
-    event.returnValue = resize;
+    event.returnValue = size;
 });
 ipcMain.on('resize', (event, arg) => {
-    resize = arg;
-    console.log(resize[0], resize[1], resize[2], resize[3]);
+    size = arg;
+    console.log(size[0], size[1], size[2], size[3]);
     event.returnValue = true;
 });
