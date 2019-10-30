@@ -1,0 +1,24 @@
+{
+  "name": "tilemap-maker",
+  "version": "0.1.0",
+  "description": "JSON Tilemap Maker",
+  "productName": "Tilemapper",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpinedev/tilemap-maker.git"
+  },
+  "author": "jpinedev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpinedev/tilemap-maker/issues"
+  },
+  "homepage": "https://github.com/jpinedev/tilemap-maker#readme",
+  "devDependencies": {
+    "electron": "^6.0.1",
+    "electron-builder": "^21.2.0"
+  }
+}
