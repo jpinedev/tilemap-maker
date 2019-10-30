@@ -16,9 +16,16 @@ let size = [64, 64, 16, 16];
 let layers = [
     {
         collision: true,
-        map: [[]]
+        map: []
     }
 ];
+for(let i = 0; i < size[1]; i++) {
+    let row = [];
+    for(let i = 0; i < size[0]; i++) {
+        row.push(null);
+    }
+    layers[0].map.push(row);
+}
 
 function createWindow() {
     if(window !== null) return;
@@ -157,12 +164,29 @@ function writeFile() {
         }
     });
 }
+function readFile() {
+    fs.readFile(workingPath, "utf-8", (err, data) => {
+        if(err) {
+            console.log('An error has occurred while trying to load the file.');
+            return;
+        }
+
+        let tilemapFile = JSON.parse(data);
+        // TODO: add dialog warning opening old file version
+        // if(tilemapFile[0].version !== app.getVersion()) { }
+        if(tilemapFile[0].type === "tilemap-maker") {
+            decompFile(tilemapFile);
+        } else {
+            console.log('JSON File structure unsupported.')
+        }
+    });
+}
+
 function saveFile() {
     if(workingPath !== null) writeFile();
     else saveFileAs();
 }
 function saveFileAs() {
-    //ipcMain.emit('save-file', compileFile());
     dialog.showSaveDialog(window, {
         title: 'Save As...',
         filters: [
@@ -177,13 +201,56 @@ function saveFileAs() {
     });
 }
 function compileFile() {
+    let key = [];
+    let compileLayers = layers.map(l => {
+        let _map = '';
+        l.map.forEach((row, j) => {
+            row.forEach(tile => {
+                let tileJSON = JSON.stringify(tile);
+                let index = key.indexOf(tileJSON);
+                if(index === -1) {
+                    key.push(tileJSON);
+                    index = key.length-1;
+                }
+                _map += index.toString();
+            });
+            if(j !== l.map.length-1) _map += '\n';
+        });
+        return {
+            collision: l.collision,
+            map: _map
+        };
+    });
     let json = [
         header,
         sources,
         size,
-        layers
+        key,
+        compileLayers
     ];
     return JSON.stringify(json);
+}
+function decompFile(data) {
+    header = data[0];
+    sources = data[1];
+    size = data[2];
+    let key = data[3].map(item => JSON.parse(item));
+    let decompLayers = data[4].map(l => {
+        let _mapString = l.map.split(/\r?\n/);
+        let _map = _mapString.map(row => {
+            _row = [];
+            for (var i = 0; i < row.length; i++) {
+                _row[i] = key[parseInt(row.charAt(i))];
+            }
+            return _row;
+        });
+        return {
+            collision: l.collision,
+            map: _map
+        };
+    });
+    
+    layers = decompLayers;
 }
 
 function openFile() {
@@ -196,22 +263,7 @@ function openFile() {
     }).then(result => {
         if(result.canceled || result.filePaths === undefined) return;
         workingPath = result.filePaths[0];
-        fs.readFile(result.filePaths[0], "utf-8", (err, data) => {
-            if(err) {
-                console.log('An error has occurred while trying to load the file.');
-                return;
-            }
-
-            let tilemapFile = JSON.parse(data);
-            // TODO: add dialog warning opening old file version
-            // if(tilemapFile[0].version !== app.getVersion()) { }
-            if(tilemapFile[0].type === "tilemap-maker") {
-                header = tilemapFile[0];
-                sources = tilemapFile[1];
-                size = tilemapFile[2];
-                layers = tilemapFile[3];
-            }
-        });
+        readFile();
     }).catch(err => {
         console.log(err);
     });
@@ -222,6 +274,33 @@ ipcMain.on('get-resize', (event, arg) => {
 });
 ipcMain.on('resize', (event, arg) => {
     size = arg;
-    console.log(size[0], size[1], size[2], size[3]);
+    layers = layers.map(l => {
+        let _map = resizeRows(l.map);
+        return {
+            collision: l.collision,
+            map: _map
+        };
+    });
     event.returnValue = true;
 });
+
+function resizeRows(_map) {
+    if(size[1] < _map.length) {
+        _map = _map.slice(0, size[1]);
+    } else if(size[1] > _map.length) {
+        while(_map.length < size[1]) {
+            _map.push([]);
+        }
+    }
+    return _map.map(_row => resizeRow(_row));
+}
+function resizeRow(_row) {
+    if(size[0] < _row.length) {
+        _row = _row.slice(0, size[0]);
+    } else if(size[0] > _row.length) {
+        while(_row.length < size[0]) {
+            _row.push(null);
+        }
+    }
+    return _row;
+}
