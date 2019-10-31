@@ -166,7 +166,8 @@ const confirmOpenOpt = fileVersion => {
     return {
         title: 'Warning: Old file version.',
         type: 'warning',
-        message: `The version file you are attempting to open (${fileVersion}) does not match current Tilemapper version (${app.getVersion()}).\nOpening this file could cause corruption.\nPlease make a backup before continuing.`,
+        message: `Attempting to open outdated file.\nOpening this file could cause corruption.\nPlease make a backup before continuing.`,
+        detail: `File version:\nv${fileVersion}\nTilemapper version:\nv${app.getVersion()}`,
         defaultId: 1,
         cancelId: 1,
         buttons: ['Continue', 'Cancel']
