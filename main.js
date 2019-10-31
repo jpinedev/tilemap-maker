@@ -50,9 +50,6 @@ function createWindow() {
     });
 }
 
-function tempLog(name) {
-    return () => { console.log('clicked '+name) };
-}
 app.on('ready', () => {
     header.version = app.getVersion();
     createWindow();
@@ -95,6 +92,7 @@ app.on('ready', () => {
         {
             label: 'Edit',
             submenu: [
+                // TODO: add functionality for 'undo' and 'redo'
                 { role: 'undo' },
                 { role: 'redo' },
                 { type: 'separator' },
@@ -164,20 +162,31 @@ function writeFile() {
         }
     });
 }
-function readFile() {
-    fs.readFile(workingPath, "utf-8", (err, data) => {
+const confirmOpenOpt = fileVersion => {
+    return {
+        title: 'Warning: Old file version.',
+        type: 'warning',
+        message: `The version file you are attempting to open (${fileVersion}) does not match current Tilemapper version (${app.getVersion()}).\nOpening this file could cause corruption.\nPlease make a backup before continuing.`,
+        defaultId: 1,
+        cancelId: 1,
+        buttons: ['Continue', 'Cancel']
+    };
+};
+function readFile(path) {
+    fs.readFile(path, "utf-8", (err, data) => {
         if(err) {
             console.log('An error has occurred while trying to load the file.');
             return;
         }
 
         let tilemapFile = JSON.parse(data);
-        // TODO: add dialog warning opening old file version
-        // if(tilemapFile[0].version !== app.getVersion()) { }
         if(tilemapFile[0].type === "tilemap-maker") {
-            decompFile(tilemapFile);
+            if(tilemapFile[0].version === app.getVersion() || dialog.showMessageBoxSync(confirmOpenOpt(tilemapFile[0].version)) === 0) {
+                workingPath = path;
+                decompFile(tilemapFile);
+            }
         } else {
-            console.log('JSON File structure unsupported.')
+            console.log('JSON File structure unsupported.');
         }
     });
 }
@@ -201,7 +210,7 @@ function saveFileAs() {
     });
 }
 function compileFile() {
-    let key = [];
+    let key = [JSON.stringify(null)];
     let compileLayers = layers.map(l => {
         let _map = '';
         l.map.forEach((row, j) => {
@@ -231,7 +240,7 @@ function compileFile() {
     return JSON.stringify(json);
 }
 function decompFile(data) {
-    header = data[0];
+    //header = data[0];
     sources = data[1];
     size = data[2];
     let key = data[3].map(item => JSON.parse(item));
@@ -262,8 +271,7 @@ function openFile() {
         properties: ['openFile']
     }).then(result => {
         if(result.canceled || result.filePaths === undefined) return;
-        workingPath = result.filePaths[0];
-        readFile();
+        readFile(result.filePaths[0]);
     }).catch(err => {
         console.log(err);
     });
