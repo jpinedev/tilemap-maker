@@ -1,18 +1,25 @@
 const electron = require('electron');
-const dialog = electron.remote.dialog;
-const fs = require('fs');
 const ipc = electron.ipcRenderer;
 
-ipc.on('save', (event, file) => {
-    console.log('hello')
-    dialog.showSaveDialog((filename) => {
-        fs.writeFile(filename, file, (err) => {
-            if(err) {
-                console.log('An error has occurred with the creation of the file.');
-                return;
-            }
+let sources = [];
+let size = [];
+let layers = [];
 
-            alert('File saved successfully.');
-        });
-    });
+ipc.on('update-tilemap', (event, tm) => {
+    sources = tm[0];
+    size = tm[1];
+    layers = tm[2];
 });
+
+const tools = document.getElementsByClassName('tool');
+console.log(tools);
+let activeToolIndex = 0;
+function getActiveTool() { return tools[activeToolIndex] }
+for(let i = 0; i < tools.length; i++) {
+    let tool = tools[i];
+    tool.addEventListener('click', (event) => {
+        getActiveTool().classList.remove('tool-active');
+        event.target.classList.add('tool-active');
+        activeToolIndex = i;
+    });
+};

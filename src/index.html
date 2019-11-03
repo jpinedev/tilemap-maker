@@ -4,12 +4,29 @@
         <meta charset="UTF-8">
         <title>Hello World!</title>
         <link rel="stylesheet" href="../assets/css/main.css">
+        <script defer src="../assets/js/all.js"></script>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        We are using node <script>document.write(process.versions.node)</script>,
-        Chrome <script>document.write(process.versions.chrome)</script>,
-        and Electron <script>document.write(process.versions.electron)</script>.
+        <header>
+            <i class="fas fa-paste"></i>
+            <i class="fas fa-copy"></i>
+        </header>
+        <div class="toolbar">
+            <ul class="toolbar-tools">
+                <li class="tool tool-active"><i class="fas fa-mouse-pointer"></i></li>
+                <li class="tool"><i class="far fa-hand-paper"></i></li>
+                <li class="tool"><i class="fas fa-expand"></i></li>
+                <li class="tool"><i class="fas fa-arrows-alt"></i></li>
+                <li class="tool"><i class="fas fa-crop-alt"></i></li>
+                <li class="tool"><i class="far fa-clone"></i></li>
+                <li class="tool"><i class="fas fa-paint-brush"></i></li>
+                <li class="tool"><i class="fas fa-fill-drip"></i></li>
+                <li class="tool"><i class="fas fa-eye-dropper"></i></li>
+            </ul>
+        </div>
+        <div class="inspector">
+
+        </div>
         <script src="index.js"></script>
     </body>
 </html>

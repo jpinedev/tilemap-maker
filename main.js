@@ -44,6 +44,7 @@ function createWindow() {
     }));
 
     window.webContents.openDevTools();
+    window.webContents.send('update-tilemap', [sources, size, layers]);
 
     window.on('closed', () => {
         window = null;
