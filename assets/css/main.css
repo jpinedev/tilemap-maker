@@ -50,3 +50,61 @@ header {
 .toolbar-tools > li.tool-active {
     color: #dfe6e9;
 }
+.tool {
+    position: relative;
+}
+.tool .tooltip {
+    visibility: hidden;
+    top: .625em;
+    left: 105%;
+    width: 120px;
+    background-color: #fff;
+    color: black;
+    text-align: center;
+    padding: .125em 0;
+    border-radius: 6px;
+    opacity: .6;
+    
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+.tool:hover .tooltip {
+    visibility: visible;
+    height: 1em;
+}
+.tool .tooltip::after {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    right: 100%; /* To the left of the tooltip */
+    margin-top: -.25em;
+    border-width: .25em;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+
+.tool-tile {
+    position: absolute;
+    bottom: 0;
+}
+.tool-tile-select {
+    position: relative;
+    padding: .35em;
+}
+.tile-select {
+    width: 1.5em;
+    height: 1.5em;
+    background-image: url();
+    border: .125em solid #b2bec3;
+}
+.tile-select-swap {
+    font-size: .625em;
+    margin-bottom: -1.125em;
+}
+.tile-select-primary {
+    margin-left: .75em;
+}
+.tile-select-secondary {
+    margin-top: -1em;
+}

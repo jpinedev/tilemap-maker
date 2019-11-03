@@ -19,7 +19,7 @@ for(let i = 0; i < tools.length; i++) {
     let tool = tools[i];
     tool.addEventListener('click', (event) => {
         getActiveTool().classList.remove('tool-active');
-        event.target.classList.add('tool-active');
         activeToolIndex = i;
+        getActiveTool().classList.add('tool-active');
     });
 };
