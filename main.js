@@ -22,7 +22,7 @@ let layers = [
 for(let i = 0; i < size[1]; i++) {
     let row = [];
     for(let i = 0; i < size[0]; i++) {
-        row.push(null);
+        row.push(-1);
     }
     layers[0].map.push(row);
 }
@@ -218,7 +218,7 @@ function saveFileAs() {
     });
 }
 function compileFile() {
-    let key = [JSON.stringify(null)];
+    let key = [JSON.stringify(-1)];
     let compileLayers = layers.map(l => {
         let _map = '';
         l.map.forEach((row, j) => {
@@ -257,7 +257,9 @@ function decompFile(data) {
         let _map = _mapString.map(row => {
             _row = [];
             for (var i = 0; i < row.length; i++) {
-                _row[i] = key[parseInt(row.charAt(i))];
+                const value = key[parseInt(row.charAt(i))];
+                if(value === "-1") _row[i] = -1;
+                else _row[i] = value;
             }
             return _row;
         });
@@ -317,7 +319,7 @@ function resizeRow(_row) {
         _row = _row.slice(0, size[0]);
     } else if(size[0] > _row.length) {
         while(_row.length < size[0]) {
-            _row.push(null);
+            _row.push(-1);
         }
     }
     return _row;
