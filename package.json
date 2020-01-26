@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/jpinedev/tilemap-maker#readme",
   "devDependencies": {
-    "electron": "^6.0.1",
+    "electron": "^6.1.7",
     "electron-builder": "^21.2.0"
   }
 }

@@ -7,32 +7,40 @@
         <script defer src="../assets/js/all.js"></script>
     </head>
     <body>
-        <header>
-            <i class="fas fa-paste"></i>
-            <i class="fas fa-copy"></i>
-        </header>
-        <div class="toolbar">
-            <ul class="toolbar-tools">
-                <li class="tool tool-active"><span class="tooltip">Select</span><i class="fas fa-mouse-pointer"></i></li>
-                <li class="tool"><span class="tooltip">Pan</span><i class="far fa-hand-paper"></i></li>
-                <li class="tool"><span class="tooltip">Box Select</span><i class="fas fa-vector-square"></i></li>
-                <li class="tool"><span class="tooltip">Move</span><i class="fas fa-arrows-alt"></i></li>
-                <li class="tool"><span class="tooltip">Crop</span><i class="fas fa-crop-alt"></i></li>
-                <li class="tool"><span class="tooltip">Duplicate</span><i class="far fa-clone"></i></li>
-                <li class="tool"><span class="tooltip">Paint Tiles</span><i class="fas fa-paint-brush"></i></li>
-                <li class="tool"><span class="tooltip">Fill Tiles</span><i class="fas fa-fill-drip"></i></li>
-                <li class="tool"><span class="tooltip">Select Tile</span><i class="fas fa-eye-dropper"></i></li>
-            </ul>
-            <div class="tool-tile">
-                <div class="tool-tile-select">
-                    <div class="tile-select-swap"><i class="fas fa-sync"></i></div>
-                    <div class="tile-select tile-select-primary"></div>
-                    <div class="tile-select tile-select-secondary"></div>
+        <div class="container">
+            <header>
+                <i class="fas fa-paste"></i>
+                <i class="fas fa-copy"></i>
+            </header>
+            <div class="toolbar">
+                <ul class="toolbar-tools">
+                    <li class="tool tool-active"><span class="tooltip">Select</span><i class="fas fa-mouse-pointer"></i></li>
+                    <li class="tool"><span class="tooltip">Pan</span><i class="far fa-hand-paper"></i></li>
+                    <li class="tool"><span class="tooltip">Box Select</span><i class="fas fa-vector-square"></i></li>
+                    <li class="tool"><span class="tooltip">Move</span><i class="fas fa-arrows-alt"></i></li>
+                    <li class="tool"><span class="tooltip">Crop</span><i class="fas fa-crop-alt"></i></li>
+                    <li class="tool"><span class="tooltip">Duplicate</span><i class="far fa-clone"></i></li>
+                    <li class="tool"><span class="tooltip">Paint Tiles</span><i class="fas fa-paint-brush"></i></li>
+                    <li class="tool"><span class="tooltip">Fill Tiles</span><i class="fas fa-fill-drip"></i></li>
+                    <li class="tool"><span class="tooltip">Select Tile</span><i class="fas fa-eye-dropper"></i></li>
+                </ul>
+                <div class="tool-tile">
+                    <div class="tool-tile-select">
+                        <div class="tile-select-swap"><i class="fas fa-sync"></i></div>
+                        <div class="tile-select tile-select-primary"></div>
+                        <div class="tile-select tile-select-secondary"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="inspector">
-
+            <div class="editor">
+                <div class="window">
+                    <canvas id="editor" style="width: 64vh; height: 64vh;"></canvas>
+                </div>
+            </div>
+            <div class="inspector">
+                <div class="pallet"></div>
+                <div class="layers"></div>
+            </div>
         </div>
         <script src="index.js"></script>
     </body>
