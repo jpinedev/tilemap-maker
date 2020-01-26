@@ -27,6 +27,10 @@ for(let i = 0; i < size[1]; i++) {
     layers[0].map.push(row);
 }
 
+app.commandLine.appendSwitch(
+    'enable-experimental-web-platform-features'
+);
+
 function createWindow() {
     if(window !== null) return;
     window = new BrowserWindow({
@@ -47,6 +51,7 @@ function createWindow() {
     window.webContents.send('update-tilemap', [sources, size, layers]);
 
     window.on('closed', () => {
+        // TODO: Add save before exit dialog
         window = null;
     });
 }
@@ -132,6 +137,7 @@ app.on("activate", () => {
 });
 
 function openResizeWindow() {
+    if(window === null) return;
     let win = new BrowserWindow({
         frame: false,
         alwaysOnTop: true,
@@ -274,6 +280,7 @@ function openFile() {
     }).then(result => {
         if(result.canceled || result.filePaths === undefined) return;
         readFile(result.filePaths[0]);
+        if(window === null) createWindow();
     }).catch(err => {
         console.log(err);
     });
@@ -291,6 +298,7 @@ ipcMain.on('resize', (event, arg) => {
             map: _map
         };
     });
+    window.webContents.send('update-tilemap', [sources, size, layers]);
     event.returnValue = true;
 });
 
