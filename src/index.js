@@ -70,7 +70,7 @@ function setupCanvases() {
 
 function init() {
     setupCanvases();
-    c.fillStyle = 'rgba(255, 255, 255, .5)';
+    c.fillStyle = 'rgba(99, 110, 114, .25)';
     c.fillRect(0, 0, bg.width, bg.height);
     renderTilemap();
 }

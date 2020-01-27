@@ -132,6 +132,10 @@ header {
     margin: 64vh;
 }
 
+.editor > .window > canvas {
+    border: 1.5px solid #636e72;
+}
+
 /* INSPECTOR */
 .inspector {
     grid-area: inspector;
