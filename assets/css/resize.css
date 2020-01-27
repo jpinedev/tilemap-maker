@@ -1,0 +1,48 @@
+.container-resize {
+    padding: 10vh;
+    width: 1fr;
+    height: 80vh;
+    display: grid;
+    grid-template-areas:
+        "header"
+        "resizeTilemap"
+        "resizeTile"
+        "gap"
+        "buttons";
+    grid-template-rows: 13vh 26vh 26vh 5vh 10vh;
+    grid-template-columns: 1fr;
+    -webkit-app-region: drag;
+}
+
+input, button {
+    -webkit-app-region: none;
+}
+
+.header {
+    grid-area: header;
+}
+
+.resizeTilemap {
+    grid-area: resizeTilemap;
+    margin-bottom: 2vh;
+    padding: 2vh 4vh;
+    border: 1px solid rgba(99, 110, 114, .25);
+    border-radius: 1vh;
+}
+
+.resizeTile {
+    grid-area: resizeTile;
+    margin-bottom: 2vh;
+    padding: 2vh 4vh;
+    border: 1px solid rgba(99, 110, 114, .25);
+    border-radius: 1vh;
+}
+
+.buttons {
+    grid-area: buttons;
+}
+.buttons > button {
+    padding: 3vh 19.35vh;
+    font-size: 4vh;
+    line-height: 3vh;
+}

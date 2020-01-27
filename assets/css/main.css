@@ -141,3 +141,21 @@ header {
     grid-area: inspector;
     background-color: #636e72;
 }
+
+
+/* EXTRAS */
+button {
+    color: #636e72;
+    border: 1px solid #636e72;
+    background-color: #2d3436;
+    border-radius: 1vh;
+}
+button:hover {
+    color: #b2bec3;
+    border: 1px solid #b2bec3;
+}
+button:active {
+    color: #b2bec3;
+    border: 1px solid #b2bec3;
+    background-color: #636e72;
+}
