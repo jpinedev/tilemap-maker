@@ -12,7 +12,7 @@ let workingPath = null;
 
 let header = { type: "tilemap-maker", version: "0.0.0" };
 let sources = [];
-let size = [64, 64, 16, 16];
+let size = [32, 32, 16, 16];
 let layers = [
     {
         collision: true,

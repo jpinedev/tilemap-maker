@@ -2,7 +2,7 @@ const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
 let sources = [];
-let size = [4, 4, 16, 16];
+let size = [];
 let layers = [];
 
 let views = [];
