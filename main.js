@@ -287,8 +287,8 @@ function openFile() {
         properties: ['openFile']
     }).then(result => {
         if(result.canceled || result.filePaths === undefined) return;
-        readFile(result.filePaths[0]);
         if(window === null) createWindow();
+        readFile(result.filePaths[0]);
     }).catch(err => {
         console.log(err);
     });
