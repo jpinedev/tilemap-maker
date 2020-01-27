@@ -49,7 +49,7 @@ function createWindow() {
         slashes: true
     }));
 
-    //window.webContents.openDevTools();
+    window.webContents.openDevTools();
     
     window.once('ready-to-show', () => {
         window.show();

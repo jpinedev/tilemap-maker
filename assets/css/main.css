@@ -37,7 +37,6 @@ header {
     grid-area: toolbar;
     background-color: #636e72;
 }
-
 .toolbar-tools {
     text-decoration: none;
     padding: .25em;
@@ -121,7 +120,6 @@ header {
     grid-area: editor;
     overflow: auto;
 }
-
 .editor > .window {
     position: relative;
     width: auto;
@@ -141,7 +139,40 @@ header {
     grid-area: inspector;
     background-color: #636e72;
 }
-
+.inspector > .layers {
+    padding: 2px;
+}
+.inspector > .layers > .layers-list {
+    list-style: none;
+    width: 1fr;
+    border-top: 1px solid#b2bec3;
+}
+.inspector > .layers > .layers-list > .layers-list_layer {
+    width: 1fr;
+    border-bottom: 1px solid #b2bec3;
+}
+.inspector > .layers > .layers-list > .active {
+    background-color: #2d3436;
+}
+.inspector > .layers > .layers-list > .layers-list_layer > a {
+    width: 1.5rem;
+    padding: .5rem;
+    text-decoration: none;
+    color: #b2bec3;
+}
+.inspector > .layers > .layers-list > .layers-list_layer > a:hover {
+    color: #dfe6e9;
+}
+.inspector > .layers > .layers-list > .layers-list_layer > a > * {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+.inspector > .layers > .layers-list > .layers-list_layer > span {
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    border-left: 1px solid #b2bec3;
+    padding-left: .5rem;
+}
 
 /* EXTRAS */
 button {

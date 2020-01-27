@@ -68,11 +68,62 @@ function setupCanvases() {
     editorDiv.scroll(win.scrollWidth/4, win.scrollHeight/4);
 }
 
+const ll = document.getElementsByClassName('layers-list')[0];
+let layersList = [];
+
+function setupLayersList() {
+    ll.innerHTML = '';
+
+    layersList = layers.map((layer, i) => {
+        let li = document.createElement('li');
+        li.classList.add('layers-list_layer');
+        let a = document.createElement('a');
+        a.href = '#';
+        a.onclick = () => { toggleShowLayer(i) };
+        let shown = document.createElement('span');
+        shown.style.padding = '0 0.13rem 0 0.12rem';
+        shown.style.textAlign = 'center';
+        let shownIcon = document.createElement('i');
+        shownIcon.classList.add('far');
+        shownIcon.classList.add('fa-eye');
+        let hidden = document.createElement('span');
+        hidden.style.display = 'none';
+        let hiddenIcon = document.createElement('i');
+        hiddenIcon.classList.add('far');
+        hiddenIcon.classList.add('fa-eye-slash');
+        let span = document.createElement('span');
+        span.innerHTML = layer.name;
+        shown.appendChild(shownIcon);
+        hidden.appendChild(hiddenIcon);
+        a.appendChild(shown);
+        a.appendChild(hidden);
+        li.appendChild(a);
+        li.appendChild(span);
+        ll.appendChild(li);
+        return {layer: li, hidden: false, eyeShown: shown, eyeHidden: hidden};
+    });
+}
+
+function toggleShowLayer(i) {
+    let layerObj = layersList[i];
+    layersList[i].hidden = !layersList[i].hidden;
+    if(layersList[i].hidden) {
+        layerObj.eyeShown.style.display = 'none';
+        layerObj.eyeHidden.style.display = 'inline';
+        views[i].canvas.style.display = 'none';
+    } else {
+        layerObj.eyeShown.style.display = 'inline';
+        layerObj.eyeHidden.style.display = 'none';
+        views[i].canvas.style.display = 'block';
+    }
+}
+
 function init() {
     setupCanvases();
     c.fillStyle = 'rgba(99, 110, 114, .25)';
     c.fillRect(0, 0, bg.width, bg.height);
     renderTilemap();
+    setupLayersList();
 }
 
 function renderTilemap() {
