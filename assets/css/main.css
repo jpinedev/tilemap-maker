@@ -150,6 +150,7 @@ header {
 .inspector > .layers > .layers-list > .layers-list_layer {
     width: 1fr;
     border-bottom: 1px solid #b2bec3;
+    display: flex;
 }
 .inspector > .layers > .layers-list > .active {
     background-color: #2d3436;
@@ -167,7 +168,9 @@ header {
     font-size: 1.5rem;
     line-height: 1.5rem;
 }
-.inspector > .layers > .layers-list > .layers-list_layer > span {
+.inspector > .layers > .layers-list > .layers-list_layer > div {
+    box-sizing: border-box;
+    flex-grow: 1;
     font-size: 1.5rem;
     line-height: 2.5rem;
     border-left: 1px solid #b2bec3;

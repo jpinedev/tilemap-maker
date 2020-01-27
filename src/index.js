@@ -69,6 +69,7 @@ function setupCanvases() {
 }
 
 const ll = document.getElementsByClassName('layers-list')[0];
+let activeLayer = -1;
 let layersList = [];
 
 function setupLayersList() {
@@ -91,17 +92,28 @@ function setupLayersList() {
         let hiddenIcon = document.createElement('i');
         hiddenIcon.classList.add('far');
         hiddenIcon.classList.add('fa-eye-slash');
-        let span = document.createElement('span');
-        span.innerHTML = layer.name;
+        let div = document.createElement('div');
+        div.innerHTML = layer.name;
+        div.onclick = () => { selectLayer(i) };
         shown.appendChild(shownIcon);
         hidden.appendChild(hiddenIcon);
         a.appendChild(shown);
         a.appendChild(hidden);
         li.appendChild(a);
-        li.appendChild(span);
+        li.appendChild(div);
         ll.appendChild(li);
         return {layer: li, hidden: false, eyeShown: shown, eyeHidden: hidden};
     });
+
+    selectLayer(activeLayer);
+}
+
+function selectLayer(i) {
+    layersList.forEach((layerObj, index) => {
+        if(i == index) layerObj.layer.classList.add('active');
+        else layerObj.layer.classList.remove('active');
+    });
+    activeLayer = i;
 }
 
 function toggleShowLayer(i) {
