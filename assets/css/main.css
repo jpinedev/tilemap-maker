@@ -123,6 +123,9 @@ header {
 }
 
 .editor > .window {
+    position: relative;
+    width: auto;
+    height: auto;
 }
 
 #editor {
