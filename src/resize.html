@@ -4,28 +4,31 @@
         <meta charset="UTF-8">
         <title>Resize</title>
         <link rel="stylesheet" href="../assets/css/main.css">
+        <link rel="stylesheet" href="../assets/css/resize.css">
     </head>
     <body>
-        <div class="header">
-            <h1>Resize</h1>
-        </div>
-        <div class="row">
-            <h2>Resize Tilemap:</h2>
-            <label for="tilemapwidth">Tilemap Width: </label><input type="number" name="tilemapwidth" min="1" max="512" step="1" value="64">
-            <br>
-            <label for="tilemapheight">Tilemap Height: </label><input type="number" name="tilemapheight" min="1" max="512" step="1" value="64">
-        </div>
-        <div class="row">
-            <h2>Resize Tiles:</h2>
-            <label for="tilewidth">Tile Width: </label><input type="number" name="tilewidth" min="1" max="256" step="1" value="16">px
-            <br>
-            <label for="tileheight">Tile Height: </label><input type="number" name="tileheight" min="1" max="256" step="1" value="16">px
-            <br>
-            <!-- <input type="checkbox" name="squaretiles"> Square Tiles -->
-        </div>
-        <div class="row">
-            <button id="cancel">Cancel</button>
-            <button id="confirm">Confirm</button>
+        <div class="container-resize">
+            <div class="header">
+                <h1>Resize</h1>
+            </div>
+            <div class="resizeTilemap">
+                <h2>Resize Tilemap:</h2>
+                <label for="tilemapwidth">Tilemap Width: </label><input type="number" name="tilemapwidth" min="1" max="512" step="1" value="64">
+                <br>
+                <label for="tilemapheight">Tilemap Height: </label><input type="number" name="tilemapheight" min="1" max="512" step="1" value="64">
+            </div>
+            <div class="resizeTile">
+                <h2>Resize Tiles:</h2>
+                <label for="tilewidth">Tile Width: </label><span><input type="number" name="tilewidth" min="1" max="256" step="1" value="16">px</span>
+                <br>
+                <label for="tileheight">Tile Height: </label><span><input type="number" name="tileheight" min="1" max="256" step="1" value="16">px</span>
+                <br>
+                <!-- <input type="checkbox" name="squaretiles"> Square Tiles -->
+            </div>
+            <div class="buttons">
+                <button id="cancel">Cancel</button>
+                <button id="confirm">Confirm</button>
+            </div>
         </div>
         <script src="resize.js"></script>
     </body>
