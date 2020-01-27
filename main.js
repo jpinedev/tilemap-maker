@@ -15,6 +15,7 @@ let sources = [];
 let size = [32, 32, 16, 16];
 let layers = [
     {
+        name: "Layer 1",
         collision: true,
         map: []
     }
@@ -270,6 +271,7 @@ function decompFile(data) {
             return _row;
         });
         return {
+            name: l.name,
             collision: l.collision,
             map: _map
         };
